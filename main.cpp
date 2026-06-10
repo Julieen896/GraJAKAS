@@ -1,5 +1,6 @@
 #include <iostream>
 #include <windows.h> // biblioteka zawierajaca Sleep
+#include <conio.h> // biblioteka zawierajaca _kbhit() i _getch()
 using namespace std;
 int main(){
 
@@ -8,13 +9,29 @@ char plansza[10][50];
 int dinoY=8;
 int dinoX=4;
 char przeszkoda='#';
+
+
 int przeszkodaX=25;
+
 bool GRA =true;
 
 
 
 while (true){
+    
     system("cls");//wyczyszcza ekran
+    if (_kbhit()) {
+    int key = _getch();
+    if (key == ' ') {  // spacja
+        if (dinoY > 0) {
+            dinoY -= 1;
+        }
+    }
+}
+
+if (dinoY < 8) {
+    dinoY += 1; // prosta grawitacja, wraca na dół
+}
     for(int y=0;y<10;y++){
     
     for(int x=0;x<50;x++){
@@ -26,6 +43,8 @@ while (true){
 }
     plansza[dinoY][dinoX]='O';
     plansza[8][przeszkodaX]=przeszkoda;
+    
+
 
 
 
@@ -34,6 +53,7 @@ while (true){
     cout << y;
     for(int x=0;x<50;x++){
         cout <<plansza[y][x];
+        
     }
     cout << endl;
     }   
@@ -42,6 +62,11 @@ while (true){
         przeszkodaX=49;
     }
     Sleep(100);//czeka 100ms
+
+
+
+
+
 }
 
 
