@@ -5,10 +5,12 @@ using namespace std;
 int main(){
 
 
-char plansza[10][50];
+char plansza[11][50];
 int dinoY=8;
 int dinoX=4;
 char przeszkoda='#';
+int wynik=0;
+plansza[11][1]=wynik;
 
 
 int przeszkodaX=25;
@@ -17,21 +19,22 @@ bool GRA =true;
 
 
 
-while (true){
+while (GRA){
     
     system("cls");//wyczyszcza ekran
     if (_kbhit()) {
     int key = _getch();
-    if (key == ' ') {  // spacja
+    if (key == 32 && dinoY==8 ) {  // spacja
         if (dinoY > 0) {
             dinoY -= 1;
         }
     }
 }
+    if (dinoY < 8) {
+        dinoY += 1; // grawitacja
+    }
 
-if (dinoY < 8) {
-    dinoY += 1; // prosta grawitacja, wraca na dół
-}
+
     for(int y=0;y<10;y++){
     
     for(int x=0;x<50;x++){
@@ -61,12 +64,17 @@ if (dinoY < 8) {
     if(przeszkodaX<0){
         przeszkodaX=49;
     }
+    
+    if(przeszkodaX==dinoX && dinoY==8){
+        GRA=false;
+        cout << "PRZEGRALES!" << endl;
+        break;
+    }
     Sleep(100);//czeka 100ms
 
 
 
-
-
+    wynik++;
 }
 
 
