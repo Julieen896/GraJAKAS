@@ -15,7 +15,6 @@ srand(time(0));
 char plansza[11][50];
 int dinoY=8;
 int dinoX=4;
-char przeszkoda='#';
 int wynik=0;
 
 
@@ -114,14 +113,23 @@ while(chceGrac){
         cout << endl;
         }   
         
-        for(int i=0;i<MAXKAKTUSOW;i++){
-            kaktusX[i]--;
-            if(kaktusX[i]<-2){
-                kaktusX[i]=49;
-                 kaktusWysokosc[i] = rand() % 2 + 1;
-                kaktusSzerokosc[i] = rand() % 2 + 1;
-            }
+        for(int i = 0; i < MAXKAKTUSOW; i++)
+        {
+        bool kolizjaX =
+            dinoX >= kaktusX[i] &&
+            dinoX < kaktusX[i] + kaktusSzerokosc[i];
+
+        bool kolizjaY =
+            dinoY >= 8 - kaktusWysokosc[i] &&
+            dinoY <= 8;
+
+        if(kolizjaX && kolizjaY)
+        {
+            GRA = false;
+            break;
         }
+        }
+        
 
         if(_kbhit()){
             char klawisz =_getch();
@@ -146,16 +154,16 @@ while(chceGrac){
             licznikSkoku++;
         }
 
-
-        
-        if(przeszkodaX==dinoX && dinoY==8){
-            GRA=false;
-            break;
-            
-            
-            
-            
+        for(int i=0;i<MAXKAKTUSOW;i++){
+            kaktusX[i]--;
+            if(kaktusX[i]<-2){
+                kaktusX[i]=49;
+                 kaktusWysokosc[i] = rand() % 2 + 1;
+                kaktusSzerokosc[i] = rand() % 2 + 1;
+            }
         }
+        
+        
         wynik+=1;
         Sleep(100);//czeka 100ms
 
