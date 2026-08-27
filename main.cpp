@@ -18,9 +18,7 @@ int dinoX=4;
 char przeszkoda='#';
 int wynik=0;
 
-int przeszkodaX=25;
-int przeszkodaY=8;
-int przeszkodaWysokosc = 3;
+
 
 bool GRA =false;
 bool start=false;
@@ -28,7 +26,10 @@ bool skacze=false;
 bool chceGrac=true;
 int licznikSkoku=0;
 
-
+const int MAXKAKTUSOW=5;
+int kaktusX[MAXKAKTUSOW];
+int kaktusWysokosc[MAXKAKTUSOW];
+int kaktusSzerokosc[MAXKAKTUSOW];
 
 
 cout <<"========================================"<< endl;
@@ -45,16 +46,24 @@ if (_kbhit()){
 }
 system("cls"); // czysci tekst startowy
 while(chceGrac){
+    kaktusX[0] = 25;
+    kaktusX[1] = 45;
+    kaktusX[2] = 65;
+    kaktusX[3] = 85;
+    kaktusX[4] = 105;
     dinoX = 4;
     dinoY = 8;
-
-    przeszkodaX = 49;
-    przeszkodaY = 8;
 
     GRA = true;
     skacze = false;
     licznikSkoku = 0;
     wynik = 0;
+    for(int i = 0; i < MAXKAKTUSOW; i++)
+    {
+        kaktusWysokosc[i] = rand() % 2 + 1;
+        kaktusSzerokosc[i] = rand() % 2 + 1;
+    }
+
 
 
     while (GRA){
@@ -79,10 +88,20 @@ while(chceGrac){
         plansza[dinoY][dinoX]='O'; 
 
         
-        for (int y=0; y<przeszkodaWysokosc;y++){
-            plansza[8-y][przeszkodaX]='#';
+        for(int i = 0; i < MAXKAKTUSOW; i++)
+    {
+        for(int y = 0; y < kaktusWysokosc[i]; y++)
+        {
+            for(int x = 0; x < kaktusSzerokosc[i]; x++)
+            {
+                if(kaktusX[i] + x >= 0 && kaktusX[i] + x < 50)
+                {
+                    plansza[8-y][kaktusX[i]+x] = '#';
+                }
+            }
         }
-        plansza[8][przeszkodaX]=przeszkoda;
+    }
+        
         
 
 
@@ -95,10 +114,13 @@ while(chceGrac){
         cout << endl;
         }   
         
-        przeszkodaX-=1;
-        if(przeszkodaX<0){
-            przeszkodaX=49;
-            przeszkodaWysokosc = rand() % 3 + 1; // losowanie wysokosci kaktusa (od 1 do 3)
+        for(int i=0;i<MAXKAKTUSOW;i++){
+            kaktusX[i]--;
+            if(kaktusX[i]<-2){
+                kaktusX[i]=49;
+                 kaktusWysokosc[i] = rand() % 2 + 1;
+                kaktusSzerokosc[i] = rand() % 2 + 1;
+            }
         }
 
         if(_kbhit()){
