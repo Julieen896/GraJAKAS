@@ -30,167 +30,215 @@ int kaktusX[MAXKAKTUSOW];
 int kaktusWysokosc[MAXKAKTUSOW];
 int kaktusSzerokosc[MAXKAKTUSOW];
 
+int poziom;
+int predkosc;
 
-cout <<"========================================"<< endl;
-cout <<"            GOOGLE DINOZAUR"<<endl;
-cout <<"        wcisnij ENTER aby zaczac"<<endl;
-cout <<"========================================"<<endl;
-while(!start){
-if (_kbhit()){
-    int key=_getch();
-    if (key==13){
-        start=true;
-    }
-}
-}
-system("cls"); // czysci tekst startowy
+
 while(chceGrac){
-    kaktusX[0] = 25;
-    kaktusX[1] = 45;
-    kaktusX[2] = 65;
-    kaktusX[3] = 85;
-    kaktusX[4] = 105;
-    dinoX = 4;
-    dinoY = 8;
-
-    GRA = true;
-    skacze = false;
-    licznikSkoku = 0;
-    wynik = 0;
-    for(int i = 0; i < MAXKAKTUSOW; i++)
+    cout << "========================================" << endl;
+    cout << "            GOOGLE DINOZAUR" << endl;
+    cout << "              SPACJA-SKOK "<<endl;
+    cout << "        Wybierz poziom:" << endl;
+    cout << "        1 - LATWY" << endl;
+    cout << "        2 - NORMALNY" << endl;
+    cout << "        3 - TRUDNY" << endl;
+    cout << "        ESC - WYJSCIE"<<endl;
+    cout << "========================================" << endl;
+    bool wybranoPoziom = false;
+    while(!wybranoPoziom && chceGrac)
     {
-        kaktusWysokosc[i] = rand() % 2 + 1;
-        kaktusSzerokosc[i] = rand() % 2 + 1;
-    }
-
-
-
-    while (GRA){
-        
-        
-        COORD pozycja;
-        pozycja.X = 0;
-        pozycja.Y = 0;
-        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pozycja); // czysci plansze
-        cout<<"Punkty: "<<wynik;
-
-        
-        for(int y=0;y<10;y++){
-        
-        for(int x=0;x<50;x++){
-            plansza[y][x]=' ';
-        }
-    }
-        for(int x=0;x<50;x++){
-        plansza[9][x]='=';
-    }
-        plansza[dinoY][dinoX]='O'; 
-
-        
-        for(int i = 0; i < MAXKAKTUSOW; i++)
-    {
-        for(int y = 0; y < kaktusWysokosc[i]; y++)
+        if(_kbhit())
         {
-            for(int x = 0; x < kaktusSzerokosc[i]; x++)
+            char klawisz = _getch();
+
+            if(klawisz == '1')
             {
-                if(kaktusX[i] + x >= 0 && kaktusX[i] + x < 50)
+                poziom = 1;
+                predkosc = 150;
+                wybranoPoziom = true;
+            }
+            else if(klawisz == '2')
+            {
+                poziom = 2;
+                predkosc = 100;
+                wybranoPoziom = true;
+            }
+            else if(klawisz == '3')
+            {
+                poziom = 3;
+                predkosc = 60;
+                wybranoPoziom = true;
+            }
+            else if(klawisz == 27)
+            {
+                chceGrac = false;
+                break;
+            }
+        }
+        
+    }
+    bool zmienPoziom = false;
+    while(!zmienPoziom && chceGrac){
+        system("cls"); // czysci tekst startowy
+        kaktusX[0] = 25;
+        kaktusX[1] = 45;
+        kaktusX[2] = 65;
+        kaktusX[3] = 85;
+        kaktusX[4] = 105;
+        dinoX = 4;
+        dinoY = 8;
+
+        GRA = true;
+        skacze = false;
+        licznikSkoku = 0;
+        wynik = 0;
+        for(int i = 0; i < MAXKAKTUSOW; i++)
+        {
+            kaktusWysokosc[i] = rand() % 2 + 1; //losowanie wysokosci i szerokosci kaktusa
+            kaktusSzerokosc[i] = rand() % 2 + 1;
+        }
+
+
+
+        while (GRA){
+            
+            
+            COORD pozycja;
+            pozycja.X = 0;
+            pozycja.Y = 0;
+            SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pozycja); // czysci plansze
+            cout<<"Punkty: "<<wynik;
+
+            
+            for(int y=0;y<10;y++){
+            
+            for(int x=0;x<50;x++){
+                plansza[y][x]=' ';  //rysowanie planszy
+            }
+        }
+            for(int x=0;x<50;x++){
+            plansza[9][x]='=';
+        }
+            plansza[dinoY][dinoX]='O'; 
+
+            
+            for(int i = 0; i < MAXKAKTUSOW; i++)    //rysowanie kaktusa
+        {
+            for(int y = 0; y < kaktusWysokosc[i]; y++)
+            {
+                for(int x = 0; x < kaktusSzerokosc[i]; x++)
                 {
-                    plansza[8-y][kaktusX[i]+x] = '#';
+                    if(kaktusX[i] + x >= 0 && kaktusX[i] + x < 50)
+                    {
+                        plansza[8-y][kaktusX[i]+x] = '#';
+                    }
                 }
             }
         }
-    }
-        
-        
-
-
-        for(int y=0;y<10;y++){
-        cout << y;
-        for(int x=0;x<50;x++){
-            cout <<plansza[y][x];
             
-        }
-        cout << endl;
-        }   
-        
-        for(int i = 0; i < MAXKAKTUSOW; i++)
-        {
-        bool kolizjaX =
-            dinoX >= kaktusX[i] &&
-            dinoX < kaktusX[i] + kaktusSzerokosc[i];
+            
 
-        bool kolizjaY =
-            dinoY >= 8 - kaktusWysokosc[i] &&
-            dinoY <= 8;
 
-        if(kolizjaX && kolizjaY)
-        {
-            GRA = false;
-            break;
-        }
-        }
-        
-
-        if(_kbhit()){
-            char klawisz =_getch();
-
-            if(klawisz == ' ' && !skacze){
-                skacze=true;
-                licznikSkoku=0;
+            for(int y=0;y<10;y++){
+            cout << y;
+            for(int x=0;x<50;x++){
+                cout <<plansza[y][x];
                 
             }
-        }
-        if(skacze){
-            if(licznikSkoku<3){
-                dinoY--;
-            }
-            else if(licznikSkoku<6){
-                dinoY++;
-            }
-            else{
-                dinoY=8;
-                skacze=false;
-            }
-            licznikSkoku++;
-        }
+            cout << endl;
+            }   
+            
+            for(int i = 0; i < MAXKAKTUSOW; i++) //system kolizji
+            {
+            bool kolizjaX =
+                dinoX >= kaktusX[i] &&
+                dinoX < kaktusX[i] + kaktusSzerokosc[i];
 
-        for(int i=0;i<MAXKAKTUSOW;i++){
-            kaktusX[i]--;
-            if(kaktusX[i]<-2){
-                kaktusX[i]=49;
-                 kaktusWysokosc[i] = rand() % 2 + 1;
-                kaktusSzerokosc[i] = rand() % 2 + 1;
-            }
-        }
-        
-        
-        wynik+=1;
-        Sleep(100);//czeka 100ms
+            bool kolizjaY =
+                dinoY >= 8 - kaktusWysokosc[i] &&
+                dinoY <= 8;
 
+            if(kolizjaX && kolizjaY)
+            {
+                GRA = false;
+                break;
+            }
+            }
+            
+
+            if(_kbhit()){
+                char klawisz =_getch();
+
+                if(klawisz == ' ' && !skacze){
+                    skacze=true;
+                    licznikSkoku=0;
+                    
+                }
+            }
+            if(skacze){
+                if(licznikSkoku<3){
+                    dinoY--;
+                }
+                else if(licznikSkoku<6){
+                    dinoY++;
+                }
+                else{
+                    dinoY=8;
+                    skacze=false;
+                }
+                licznikSkoku++;
+            }
+
+            for(int i=0;i<MAXKAKTUSOW;i++){
+                kaktusX[i]--;
+                if(kaktusX[i]<-2){
+                    kaktusX[i]=49;
+                    kaktusWysokosc[i] = rand() % 2 + 1;
+                    kaktusSzerokosc[i] = rand() % 2 + 1;
+                }
+            }
+            
+            
+            wynik+=1;
+            Sleep(predkosc);//czeka 
+
+            cout << endl;
+            
+            
+        }
+        system("cls");
+        cout << "==============================" << endl;
+        cout << "          GAME OVER" << endl;
+        cout << "       Wynik: " << wynik*10 << endl;
         cout << endl;
-        
-        
-    }
-    system("cls");
-    cout << "==============================" << endl;
-    cout << "          GAME OVER" << endl;
-    cout << "       Wynik: " << wynik*10 << endl;
-    cout << endl;
-    cout << "   ENTER - zagraj ponownie" << endl;
-    cout << "   ESC   - wyjdz" << endl;
-    cout << "==============================" << endl;
+        cout << "   ENTER - zagraj ponownie" << endl;
+        cout << "   M     - zmien poziom"<< endl;
+        cout << "   ESC   - wyjdz" << endl;
+        cout << "==============================" << endl;
+
+    
     while(true)
     {
         if(_kbhit())
         {
             char klawisz = _getch();
 
-            if(klawisz == 13) // ENTER
+            // ENTER = ponowna gra
+            if(klawisz == 13)
             {
                 break;
             }
 
-            if(klawisz == 27) // ESC
+            // M = wróć do wyboru poziomu
+            if(klawisz == 'm' || klawisz == 'M')
+            {
+                zmienPoziom=true;
+                
+                break;
+            }
+
+            // ESC = wyjście
+            if(klawisz == 27)
             {
                 chceGrac = false;
                 break;
@@ -199,4 +247,5 @@ while(chceGrac){
     }
 }
 
+}
 }
