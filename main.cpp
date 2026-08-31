@@ -24,8 +24,8 @@ int kaktusX[MAXKAKTUSOW];
 int kaktusWysokosc[MAXKAKTUSOW];
 int kaktusSzerokosc[MAXKAKTUSOW];
 
-int poziom;
-int predkosc;
+int poziom=1;
+int predkosc=150;
 
 const int MINODSTEP=15;
 const int MAXODSTEP=30;
@@ -34,47 +34,27 @@ while(chceGrac){
     cout << "========================================" << endl;
     cout << "            GOOGLE DINOZAUR" << endl;
     cout << "              SPACJA-SKOK "<<endl;
-    cout << "        Wybierz poziom:" << endl;
-    cout << "        1 - LATWY" << endl;
-    cout << "        2 - NORMALNY" << endl;
-    cout << "        3 - TRUDNY" << endl;
-    cout << "        ESC - WYJSCIE"<<endl;
+    cout << "        Wcisnij ENTER aby zaczac" << endl;
+    cout << "           ESC - WYJSCIE"<<endl;
     cout << "========================================" << endl;
-    bool wybranoPoziom = false;
-    while(!wybranoPoziom && chceGrac)
+    while(!start)
     {
-        if(_kbhit())    //wybieranie poziomu
-        {
+        if(_kbhit())
+            {
             char klawisz = _getch();
 
-            if(klawisz == '1')
+            if(klawisz == 13)
             {
-                poziom = 1;
-                predkosc = 150;
-                wybranoPoziom = true;
+                start = true;
             }
-            else if(klawisz == '2')
-            {
-                poziom = 2;
-                predkosc = 100;
-                wybranoPoziom = true;
-            }
-            else if(klawisz == '3')
-            {
-                poziom = 3;
-                predkosc = 60;
-                wybranoPoziom = true;
-            }
-            else if(klawisz == 27) //ESC
+            else if(klawisz == 27)
             {
                 chceGrac = false;
                 break;
             }
-        }
-        
+            }
     }
-    bool zmienPoziom = false;
-    while(!zmienPoziom && chceGrac){
+    
         system("cls"); // czysci tekst startowy
         kaktusX[0] = 25;
         //kaktusX[1] = 45;
@@ -91,6 +71,8 @@ while(chceGrac){
         GRA = true;
         skacze = false;
         licznikSkoku = 0;
+        poziom = 1;
+        predkosc = 150;
         wynik = 0;
         for(int i = 0; i < MAXKAKTUSOW; i++)
         {
@@ -109,7 +91,7 @@ while(chceGrac){
             pozycja.X = 0;
             pozycja.Y = 0;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pozycja); // czysci plansze
-            cout<<"Punkty: "<<wynik;
+            cout<<"Punkty: "<<wynik<<"  Poziom: "<<poziom;
 
             
             for(int y=0;y<10;y++){
@@ -219,7 +201,15 @@ while(chceGrac){
             }
             
             
-            wynik+=1;
+            wynik+=10;
+            poziom=wynik/100+1;
+            predkosc=150-(poziom-1)*15;
+            if(predkosc < 40)
+            {
+                predkosc = 40;
+            }
+            
+            
             Sleep(predkosc);//czeka 
 
             cout << endl;
@@ -229,10 +219,9 @@ while(chceGrac){
         system("cls");
         cout << "==============================" << endl;
         cout << "          GAME OVER" << endl;
-        cout << "       Wynik: " << wynik*10 << endl;
+        cout << "       Wynik: " << wynik << endl;
         cout << endl;
         cout << "   ENTER - zagraj ponownie" << endl;
-        cout << "   M     - zmien poziom"<< endl;
         cout << "   ESC   - wyjdz" << endl;
         cout << "==============================" << endl;
 
@@ -249,13 +238,6 @@ while(chceGrac){
                 break;
             }
 
-            // M = wróć do wyboru poziomu
-            if(klawisz == 'm' || klawisz == 'M')
-            {
-                zmienPoziom=true;
-                
-                break;
-            }
 
             // ESC = wyjście
             if(klawisz == 27)
@@ -265,7 +247,7 @@ while(chceGrac){
             }
         }
     }
-}
+
 
 }
 }
