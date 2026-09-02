@@ -24,11 +24,19 @@ int kaktusX[MAXKAKTUSOW];
 int kaktusWysokosc[MAXKAKTUSOW];
 int kaktusSzerokosc[MAXKAKTUSOW];
 
+const int MAXCHMUREK=3;
+int chmurkaX[MAXCHMUREK];
+int chmurkaY[MAXCHMUREK];
+
+
 int poziom=1;
 int predkosc=150;
 
-const int MINODSTEP=15;
-const int MAXODSTEP=30;
+const int MINODSTEP=8;
+const int MAXODSTEP=20;
+
+int Najelpszywynik=0;
+int licznikCzasu = 0;
 
 while(chceGrac){
     cout << "========================================" << endl;
@@ -65,6 +73,11 @@ while(chceGrac){
             int odstep=rand() % (MAXODSTEP-MINODSTEP+1)+MINODSTEP;
             kaktusX[i]=kaktusX[i-1]+odstep;
         }
+        for (int i=0;i<MAXCHMUREK;i++){
+            chmurkaX[i]=15+i*10;
+            chmurkaY[i]=2+rand() % 3;
+        }
+
         dinoX = 4;
         dinoY = 8;
 
@@ -119,6 +132,14 @@ while(chceGrac){
                 }
             }
         }
+        for (int i=0;i<MAXCHMUREK;i++){
+            for (int x=0;x<3;x++){
+                int X=chmurkaX[i]+x;
+                if(X>=0 && X<50){
+                    plansza[chmurkaY[i]][X]='~';
+                }
+            }
+        }
 
             for(int y=0;y<10;y++){ //rysowanie planszy
             cout << y;
@@ -169,6 +190,16 @@ while(chceGrac){
                 }
                 licznikSkoku++;
             }
+            for(int i = 0; i < MAXCHMUREK; i++)
+            {
+                chmurkaX[i]--;
+
+                if(chmurkaX[i] < -3)
+                {
+                    chmurkaX[i] = 50 + rand() % 20;
+                    chmurkaY[i] = 2 + rand() % 3;
+                }
+            }
 
             for(int i = 0; i < MAXKAKTUSOW; i++)
             {
@@ -201,12 +232,38 @@ while(chceGrac){
             }
             
             
-            wynik+=10;
-            poziom=wynik/100+1;
-            predkosc=150-(poziom-1)*15;
-            if(predkosc < 40)
+            wynik +=10 ;
+
+            if(wynik < 500)
             {
-                predkosc = 40;
+                poziom = 1;
+            }
+            else if(wynik < 1500)
+            {
+                poziom = 2;
+            }
+            else if(wynik < 4500)
+            {
+                poziom = 3;
+            }
+            else if(wynik < 10000)
+            {
+                poziom = 4;
+            }
+            else if(wynik < 25000)
+            {
+                poziom = 5;
+            }
+            else
+            {
+                poziom = 6;
+            }
+
+            predkosc = 150 - (poziom - 1) * 15;
+
+            if(predkosc < 75)
+            {
+                predkosc = 75;
             }
             
             
@@ -217,9 +274,13 @@ while(chceGrac){
             
         }
         system("cls");
+        if (wynik>Najelpszywynik){
+            Najelpszywynik=wynik;
+        }
         cout << "==============================" << endl;
         cout << "          GAME OVER" << endl;
         cout << "       Wynik: " << wynik << endl;
+        cout << "       Rekord: "<<Najelpszywynik<<endl;
         cout << endl;
         cout << "   ENTER - zagraj ponownie" << endl;
         cout << "   ESC   - wyjdz" << endl;
