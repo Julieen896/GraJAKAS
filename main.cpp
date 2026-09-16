@@ -104,7 +104,10 @@ while(chceGrac){
             pozycja.X = 0;
             pozycja.Y = 0;
             SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pozycja); // czysci plansze
-            cout<<"Punkty: "<<wynik<<"  Poziom: "<<poziom;
+            
+            cout <<"Julian Siewert 1A"<<endl;
+            cout<<"Punkty: "<<wynik<<"  Poziom: "<<poziom<<endl;
+
 
             
             for(int y=0;y<10;y++){
